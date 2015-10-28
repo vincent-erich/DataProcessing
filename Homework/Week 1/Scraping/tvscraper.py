@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# Name:
-# Student number:
+# Name : Vincent Erich
+# Student number : 10384081
 '''
 This script scrapes IMDB and outputs a CSV file with highest ranking tv series.
 '''
@@ -31,26 +31,41 @@ def extract_tvseries(dom):
     # NOTE: FOR THIS EXERCISE YOU ARE ALLOWED (BUT NOT REQUIRED) TO IGNORE
     # UNICODE CHARACTERS AND SIMPLY LEAVE THEM OUT OF THE OUTPUT.
 
-    for table_row in dom.by_tag("tr")[:51]:
-        for table_cell in table_row.by_tag("td.title")[:1]:
-            for a in table_cell.by_tag("a")[:1]:
-                # Title....
-                print plaintext(a.content)
-            for rating_span in table_cell.by_tag("span.rating-rating")[:1]:
-                # Rating...
-                print plaintext(rating_span.content)
-            for credit_span in table_cell.by_tag("span.credit")[:1]:
-                # Actors...
-                print plaintext(credit_span.content)
-            for genre_span in table_cell.by_tag("span.genre")[:1]:
-                # Genre...
-                print plaintext(genre_span.content)
-            for runtime_span in table_cell.by_tag("span.runtime")[:1]:
-                # Runtime...
-                print plaintext(runtime_span.content)
-            print
+    tvseries = []
 
-    return []  # replace this line as well as appropriate
+    for table_row in dom.by_tag("tr")[1:51]: # The first table row is redundant, so start from index 1.
+        
+        title = ""
+        rating = ""
+        actors = ""
+        genre = ""
+        runtime = ""
+
+        for table_cell in table_row.by_tag("td.title"):
+            for a in table_cell.by_tag("a")[:1]:
+                # Obtain the title.
+                title = unicode(plaintext(a.content))
+            for rating_span in table_cell.by_tag("span.rating-rating"):
+                # Obtain the rating.
+                rating = unicode(plaintext(rating_span.content))
+                rating = rating.split("/")[0]
+            for credit_span in table_cell.by_tag("span.credit"):
+                # Obtain the actors/actresses.
+                actors = unicode(plaintext(credit_span.content))
+                actors = actors.split(": ")[1]
+            for genre_span in table_cell.by_tag("span.genre"):
+                # Obtain the genre(s).
+                genre = unicode(plaintext(genre_span.content))
+                genre = ", ".join(genre.split(" | "))
+            for runtime_span in table_cell.by_tag("span.runtime"):
+                # Obtain the runtime.
+                runtime = unicode(plaintext(runtime_span.content))
+                runtime = runtime.split(" ")[0]
+
+            tvseries_item = [title, rating, genre, actors, runtime]
+            tvseries.append(tvseries_item)
+
+    return tvseries
 
 
 def save_csv(f, tvseries):
@@ -61,6 +76,13 @@ def save_csv(f, tvseries):
     writer.writerow(['Title', 'Ranking', 'Genre', 'Actors', 'Runtime'])
 
     # ADD SOME CODE OF YOURSELF HERE TO WRITE THE TV-SERIES TO DISK
+
+    for tvseries_item in tvseries:
+        # Encode the strings in 'tvseries_item' (i.e., title, rating, etc.) to
+        # utf-8 and write the strings to the csv file (as a row).
+        tvseries_item = [info.encode("utf-8") for info in tvseries_item]
+        writer.writerow(tvseries_item)
+
 
 if __name__ == '__main__':
     # Download the HTML file
