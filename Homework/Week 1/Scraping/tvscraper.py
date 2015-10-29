@@ -35,11 +35,12 @@ def extract_tvseries(dom):
 
     for table_row in dom.by_tag("tr")[1:51]: # The first table row is redundant, so start from index 1.
         
-        title = ""
-        rating = ""
-        actors = ""
-        genre = ""
-        runtime = ""
+        # Default values in case something is missing.
+        title = "-"
+        rating = "-"
+        actors = "-"
+        genre = "-"
+        runtime = "-"
 
         for table_cell in table_row.by_tag("td.title"):
             for a in table_cell.by_tag("a")[:1]:

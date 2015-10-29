@@ -54,7 +54,7 @@ def split_string(source, separators):
     				result.append(match)
     			match = ""
     		else:
-    			match += source[index]
+    			match = "".join((match, source[index]))
     	'''
     	This (final) check is necessary for the case where the string <source>
     	does not end with a character that is in <separators>.  
@@ -67,4 +67,4 @@ def split_string(source, separators):
 if __name__ == '__main__':
     # You can try to run your implementation here, that will not affect the
     # automated tests.
-    print split_string('abacadabra', 'ab')  # should print: ['c', 'd', 'r']
+    print split_string('abacadabra', 'ba')  # should print: ['c', 'd', 'r']
