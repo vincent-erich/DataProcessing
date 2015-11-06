@@ -28,8 +28,16 @@ var ApplePie = {
 
 // TODO: add code here
 
-header = document.getElementById("header")
-ApplePie["creator"] = header.getElementsByTagName("p")[0].innerText
+var header_div = document.getElementById("header");
+var creator = header_div.getElementsByTagName("p")[0].innerHTML;
+ApplePie.creator = creator;
+
+var ingredient_list_div = document.getElementById("ingredient-list");
+var list_item_array = ingredient_list_div.getElementsByTagName("li");
+
+for(var i = 0; i < list_item_array.length; i++) {
+	ApplePie.ingredients.push(list_item_array[i].innerHTML);
+};
 
 // Exercise 2:
 // ----------- console.logging and iterating over an array ---------
@@ -45,12 +53,13 @@ ApplePie["creator"] = header.getElementsByTagName("p")[0].innerText
 
 // Uncomment by removing /* and */ and finish this for-loop. 
 // Notice that the for-loop is still missing its condition:
-/*
-for (var i = 0; ; i++) {
+
+for (var i = 0; i < ApplePie.ingredients.length; i++) {
 	// TODO: add a console.log statement, printing out the element
-	// in the ingredients array at index i 
+	// in the ingredients array at index i
+	console.log(ApplePie.ingredients[i]); 
 };
-*/
+
 
 // Introduction to function callbacks:
 // ------------- function callbacks using a for each loop -----------
@@ -67,11 +76,10 @@ for (var i = 0; ; i++) {
 // A good example is the forEach loop in javascript
 // Uncomment the following lines to use the forEach loop
 // on your ingredient-list.
-/*
+
 ApplePie.ingredients.forEach(function (element, index){
 	console.log('a[' + index + '] ' + element);
 });
-*/
 
 // Notice that .forEach is a property of an array since it 
 // can be called upon using a dot (just like "ingredients" is a property
@@ -85,13 +93,13 @@ ApplePie.ingredients.forEach(function (element, index){
 // The idea of passing a function to another function becomes even more
 // clear if we first declare the function. Like so:
 
-/*
+
 function log(element, index) {
 	console.log('a[' + index + '] ' + element);
 };
 
 ApplePie.ingredients.forEach(log);
-*/
+
 
 // Exercise 3:
 // ------ Changing html elements and using function callbacks ------
@@ -114,11 +122,19 @@ ApplePie.ingredients.forEach(log);
 // Make a function that display's something in the console, this can be anything
 // like "hello, world!"
 
+function print_message() {
+	console.log("Hello, world!");
+};
+
 // Select the html element containing the img using javascript selectors.
+
+var pie_img = document.getElementsByTagName("img")[0];
 
 // Add an event to the html element containing the img using a javascript function.
 // You will probably find .addEventListener() very usefull. Make sure to pass around
 // your print function to the on-click event.
+
+pie_img.addEventListener("click", print_message);
 
 // Introduction to functions returning functions
 // ------------------- function returns  -----------------
@@ -127,17 +143,16 @@ ApplePie.ingredients.forEach(log);
 // to return functions inside functions. 
 
 // A good example is the following example:
-/*
+
 function Create_printfunction(input) {
-	var message = 'Thank you for the recipe, ' + input.creator
+	var message = 'Thank you for the recipe, ' + input.creator;
 	return function(another_message){
 		console.log(message + another_message);
-	}
-}
+	};
+};
 
 var print_function = Create_printfunction(ApplePie);
-print_function(' and thank you cs50 for our programming skills!')
-*/
+print_function(' and thank you cs50 for our programming skills!');
 
 // The function Create_printfunction has a return statement. However, it does
 // not simply return a value like we are used to, but it returns a function.
@@ -226,26 +241,37 @@ print_function(' and thank you cs50 for our programming skills!')
 // for both the scaling factor alpha, and the padding beta.
 // The advantage of this function is that, because it is generic, it can be applied to any domain and range. 
 // Therefor you can call it for any axis that you create and you neither have to make calculations by hand nor hardcode any values.
-/*
+
 function createTransform(domain, range){
 	// domain is a two-element array of the domain's bounds
 	// range is a two-element array of the range's bounds
 	// implement the actual calculation here
-	var beta = ...;
-	var alpha = ...;
+
+	var beta = range[0];
+	var alpha = (range[1]- range[0]) / (domain[1] - domain[0]);
 
 	return function(x){
-		return alpha * x + beta;
+		return alpha * (x - domain[0]) + beta;
 	};
-}
+};
 
 // to use this for instance:
 var transform = createTransform([10, 20], [10, 20]);
 console.log(transform(15)); //should return 15!!
-*/
+
+// Additional tests.
+
+// Test based on the example.
+var transform2 = createTransform([0, 2000], [300, 800]);
+console.log(transform2(0));		// should return 300!!
+console.log(transform2(1000)); 	// should return 550!!
+console.log(transform2(2000));	// should return 800!!
+
+var transform3 = createTransform([2, 3], [500, 1000]);
+console.log(transform3(2));		// should return 500!!
+console.log(transform3(2.5));	// should return 750!!
+console.log(transform3(3));		// should return 1000!!
 
 // Make sure to test your createTransform function thouroughly
 // and to become familiar with how it actually works, because 
-// you need it for the next 2 weeks! 
-
-
+// you need it for the next 2 weeks!
