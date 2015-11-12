@@ -1,6 +1,6 @@
 #!usr/bin/env/python
-# Name : Vincent Erich
-# Student number : 10384081
+# Name: Vincent Erich
+# Student number: 10384081
 
 import csv
 
