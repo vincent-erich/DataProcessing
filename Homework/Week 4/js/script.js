@@ -55,6 +55,21 @@ var font_title = "15px Arial";	// The font of the titles.
 
 //-------------------------------------
 
+var cross_hair_canvas = document.getElementById("cross-hair_canvas");
+var rectObject_cross_hair = cross_hair_canvas.getBoundingClientRect();
+var left_border_cross_hair = rectObject_cross_hair.left;
+var top_border_cross_hair = rectObject_cross_hair.top;
+
+var temperature_label = document.getElementById("temp_tooltip");
+var temperature_label_width = Number((temperature_label.style.width).split("px")[0]);
+var date_label = document.getElementById("date_tooltip");
+var date_label_height = Number((date_label.style.height).split("px")[0]);
+
+var radius_inner_tooltip = 5;
+var radius_outer_tooltip = 10;
+
+//-------------------------------------
+
 // Check for support.
 if(data_canvas.getContext) {
 	var ctx = data_canvas.getContext("2d");
@@ -70,7 +85,7 @@ if(data_canvas.getContext) {
  * an array of data points.
  */
 function load_data() {
-	var textarea = document.getElementById("rawdata");
+	var textarea = document.getElementById("raw_data");
 	var raw_data = textarea.innerHTML;
 	var json = JSON.parse(JSON.parse(raw_data)); // Important!
  
@@ -365,21 +380,22 @@ function draw_line(context_2D, x1, y1, x2, y2) {
 
 //-------------------------------------------------------------------------------
 
-var cross_hair_canvas = document.getElementById("cross-hair_canvas");
-var rectObject = cross_hair_canvas.getBoundingClientRect();
-var left_border = rectObject.left;
-var top_border = rectObject.top;
-
+// Check for support.
 if(cross_hair_canvas.getContext) {
 	var ctx2 = cross_hair_canvas.getContext("2d");
+	add_cross_hair(ctx2);
+};
 
+//-------------------------------------
+
+function add_cross_hair(context_2D) {
 	cross_hair_canvas.addEventListener("mousemove", function(event) {
-		var x = event.clientX - left_border;
-		var y = event.clientY - top_border;
+		var x = event.clientX - left_border_cross_hair;
+		var y = event.clientY - top_border_cross_hair;
 
 		if(x < padding_left + y_x_gap || x > padding_left + y_x_gap + length_x_axis || 
 		   y < padding_top || y > padding_top + length_y_axis) {
-			console.log("Out of graph.");
+			console.log("Out of the graph.");
 		}
 		else {
 			ctx2.clearRect(0, 0, canvas_width, canvas_height);
@@ -387,11 +403,15 @@ if(cross_hair_canvas.getContext) {
 			var date = transform_to_date(days_since_first_date);
 			var max_temp = get_nearest_temperature_value(date);
 			var y = y_transform(max_temp);
-			draw_line(ctx2, padding_left + y_x_gap, y, padding_left + y_x_gap + length_x_axis, y);
-			draw_line(ctx2, x, padding_top, x, padding_top + length_y_axis);
+			draw_cross_hair(context_2D, x, y);
+			draw_tooltip(context_2D, x, y);
+			draw_temperature_label(x, y, max_temp);
+			draw_date_label(x, y, date);
 		};
 	});
 }
+
+//-------------------------------------
 
 function get_nearest_temperature_value(date) {
 	for(var index = 0; index < data_points.length; index++) {
@@ -401,19 +421,73 @@ function get_nearest_temperature_value(date) {
 			return data_points[index][1];
 		}
 		else {
-			var next_date = data_points[index + 1][0];
-			if(date >= next_date) {
-				continue;
-			}
-			else {
-				var half_way = next_date.getTime() - 43200000;
-				if(date < half_way) {
-					return data_points[index][1];
+			try {
+				var next_date = data_points[index + 1][0];	// Could cause an exception!
+				if(date >= next_date) {
+					continue;
 				}
 				else {
-					return data_points[index + 1][1];
-				}
+					var half_way = next_date.getTime() - 43200000;
+					if(date < half_way) {
+						return data_points[index][1];
+					}
+					else {
+						return data_points[index + 1][1];
+					}
+				};
+			}
+			catch (e) {
+				throw e;
 			};
 		};
 	};
+};
+
+//-------------------------------------
+
+function draw_cross_hair(context_2D, x, y) {
+	// Left part of the horizontal cross-hair.
+	draw_line(context_2D, padding_left + y_x_gap, y, x - radius_outer_tooltip, y);
+	// Right part of the horizontal cross-hair.
+	draw_line(context_2D, x + radius_outer_tooltip, y, padding_left + y_x_gap + length_x_axis, y);
+	// Upper part of the vertical cross-hair.
+	draw_line(context_2D, x, padding_top, x, y - radius_outer_tooltip);
+	// Lower part of the vertical cross-hair.
+	draw_line(context_2D, x, y + radius_outer_tooltip, x, padding_top + length_y_axis);
+};
+
+//-------------------------------------
+
+function draw_tooltip(context_2D, x, y) {
+	context_2D.beginPath();
+	context_2D.arc(x, y, radius_inner_tooltip, 0, 2 * Math.PI);
+	context_2D.arc(x, y, radius_outer_tooltip, 0, 2 * Math.PI);
+	context_2D.closePath();
+	context_2D.stroke();
+};
+
+//-------------------------------------
+
+function draw_temperature_label(x, y, max_temp) {
+	if(x < canvas_width - padding_right - (length_x_axis / 2)) {
+		temperature_label.style.left = (x + ((canvas_width - padding_right - x) / 2) - (temperature_label_width / 2)).toString() + "px";
+	}
+	else {
+		temperature_label.style.left = (padding_left + y_x_gap + ((x - y_x_gap - padding_left) / 2) - (temperature_label_width / 2)).toString() + "px";
+	};
+	temperature_label.style.top = y.toString() + "px";
+	temperature_label.innerHTML = max_temp.toString();
+	temperature_label.style.visibility = "visible";
+};
+
+function draw_date_label(x, y, date) {
+	if(y < padding_top + (length_y_axis / 2)) {
+		date_label.style.top = (y + ((canvas_height - padding_bottom - y) / 2) - (date_label_height / 2)).toString() + "px";
+	}
+	else {
+		date_label.style.top = (y - ((y - padding_top) / 2) - (date_label_height / 2)).toString() + "px";
+	};
+	date_label.style.left = x.toString() + "px";
+	date_label.innerHTML = get_date_string(date);
+	date_label.style.visibility = "visible";
 };

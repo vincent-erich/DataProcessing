@@ -1,0 +1,39 @@
+#container {
+	position: relative;
+}
+
+#data_canvas {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1;
+}
+
+#cross-hair_canvas {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 2;
+}
+
+#temp_tooltip {
+	color: white;
+	text-align: center;
+	background-color: black;
+	position: absolute;
+	z-index: 3;
+}
+
+#date_tooltip {
+	color: white;
+	text-align: center;
+	background-color: black;
+	position: absolute;
+	z-index: 3;
+}
+
+#raw_data {
+	position: absolute; 
+	left: 850px; 
+	top: 0;
+}
