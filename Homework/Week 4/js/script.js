@@ -19,9 +19,9 @@ var first_date_time = first_date.getTime();	// The time (in ms.) of the first da
 
 //----------
 
-var data_canvas = document.getElementById("data_canvas");		// HTML canvas element.
-var canvas_width = Number(data_canvas.getAttribute("width"));	// The width of the HTML canvas element (in px.). 
-var canvas_height = Number(data_canvas.getAttribute("height"));	// The height of the HTML canvas element (in px.).
+var data_canvas = document.getElementById("data_canvas");		// The lower HTML canvas element (on which the data is drawn).
+var canvas_width = Number(data_canvas.getAttribute("width"));	// The width of the lower HTML canvas element (in px.). 
+var canvas_height = Number(data_canvas.getAttribute("height"));	// The height of the lower HTML canvas element (in px.).
 var padding_left = 70;		// Padding left (in px.).
 var padding_right = 50;		// Padding right (in px.).
 var padding_top = 50;		// Padding top (in px.).
@@ -41,38 +41,48 @@ var x_range = [padding_left + y_x_gap, padding_left + y_x_gap + length_x_axis];
 var y_domain = [-50, 350];
 var y_range = [padding_top + length_y_axis, padding_top];
 
-var x_transform = create_transform(x_domain, x_range);						// Data point --> x-coordinate (screen)!
-var reversed_x_transform = create_reversed_transform(x_domain, x_range);	// x-coordinate (screen) --> data point!
-var y_transform = create_transform(y_domain, y_range);						// Data point --> y-coordinate (screen)!
-var reversed_y_transform = create_reversed_transform(y_domain, y_range);	// y-coordinate (screen) --> data point!
+var x_transform = create_transform(x_domain, x_range);						// Data point --> x-coordinate on screen.
+var reversed_x_transform = create_reversed_transform(x_domain, x_range);	// x-coordinate on screen --> data point.
+var y_transform = create_transform(y_domain, y_range);						// Data point --> y-coordinate on screen.
+var reversed_y_transform = create_reversed_transform(y_domain, y_range);	// y-coordinate on screen --> data point.
 
 //----------
 
 var graph_title = "Maximum temperature in De Bilt (NL) from September 22, 1994 - September 21, 1995 (including)"
 var x_axis_title = "Time (in days)"
 var y_axis_title = "Maximum temperature (in 0.1 degrees Celcius)"
-var font_title = "15px Arial";	// The font of the titles.
+var font_title = "15px Arial";		// The font of the titles.
+var color_graph_area = "#bdbdbd";	// The background color of the 'graph area' (i.e., the area where the data is drawn).
 
 //-------------------------------------
 
-var cross_hair_canvas = document.getElementById("cross-hair_canvas");
+var cross_hair_canvas = document.getElementById("cross-hair_canvas");	// The upper HTML canvas element (on which the cross-hair is drawn).
 var rectObject_cross_hair = cross_hair_canvas.getBoundingClientRect();
 var left_border_cross_hair = rectObject_cross_hair.left;
 var top_border_cross_hair = rectObject_cross_hair.top;
 
-var temperature_label = document.getElementById("temp_tooltip");
-var temperature_label_width = Number((temperature_label.style.width).split("px")[0]);
-var date_label = document.getElementById("date_tooltip");
-var date_label_height = Number((date_label.style.height).split("px")[0]);
+var temperature_label = document.getElementById("temp_tooltip");						// The temperature label (for the tooltip).
+var temperature_label_width = Number((temperature_label.style.width).split("px")[0]);	// The width of the temperature label (in px.).
+var temperature_label_height = Number((temperature_label.style.height).split("px")[0]);	// The height of the temperature label (in px.).
+var date_label = document.getElementById("date_tooltip");								// The date label (for the tooltip).
+var date_label_width = Number((date_label.style.width).split("px")[0]);					// The width of the date label (in px.).
+var date_label_height = Number((date_label.style.height).split("px")[0]);				// The height of the date label (in px.).
 
-var radius_inner_tooltip = 5;
-var radius_outer_tooltip = 10;
+var radius_inner_focus = 5;		// The radius of the inner circle of the focus (in px.).
+var radius_outer_focus = 10;	// The radius of the outer circle of the focus (in px.).
 
 //-------------------------------------
 
 // Check for support.
 if(data_canvas.getContext) {
 	var ctx = data_canvas.getContext("2d");
+	
+	// Color the 'graph area' (i.e., the area where the data is drawn)
+	ctx.save();
+	ctx.fillStyle = color_graph_area;
+	ctx.fillRect(padding_left + y_x_gap, padding_top, length_x_axis, length_y_axis);
+	ctx.restore();
+
 	draw_axes(ctx);
 	draw_titles(ctx);
 	draw_data(ctx);
@@ -87,7 +97,7 @@ if(data_canvas.getContext) {
 function load_data() {
 	var textarea = document.getElementById("raw_data");
 	var raw_data = textarea.innerHTML;
-	var json = JSON.parse(JSON.parse(raw_data)); // Important!
+	var json = JSON.parse(JSON.parse(raw_data));
  
 	for(var index = 0; index < json.length; index++) {
 		var array_data = json[index];
@@ -103,8 +113,9 @@ function load_data() {
 //-------------------------------------
 
 /*
- * Returns a (linear) transformation function (adopted from the previous
- * homework assignment).
+ * Returns a (linear) transformation function that can be used to tranform a
+ * data point (in the x- or y-domain) to a screen-coordinate (in the x- or
+ * y-range).
  */
 function create_transform(domain, range) {
 	// 'domain' is a two-element array of the domain's bounds.
@@ -119,7 +130,9 @@ function create_transform(domain, range) {
 };
 
 /*
- * NEW!
+ * Returns a (linear) transformation function that can be used to transform a
+ * screen-coordinate (in the x- or y-range) to a data-point (in the x- or
+ * y-domain).
  */
 function create_reversed_transform(domain, range) {
 	// 'domain' is a two-element array of the domain's bounds.
@@ -229,10 +242,10 @@ function draw_mark_x_axis(context_2D, x, y, date) {
  * NOTE: The code has been adopted form StackOverflow. Source:
  * http://stackoverflow.com/a/3067896
  */
-function get_date_string(date_object) {
-	var year = date_object.getFullYear().toString();		// Get the year.
-	var month = (date_object.getMonth() + 1).toString();	// Get the month ('getMonth()' returns a zero-based month, hence the plus one).
-	var day = date_object.getDate().toString();				// Get the day.
+function get_date_string(date) {
+	var year = date.getFullYear().toString();		// Get the year.
+	var month = (date.getMonth() + 1).toString();	// Get the month ('getMonth()' returns a zero-based month, hence the plus one).
+	var day = date.getDate().toString();			// Get the day.
 	// Return the correct string representation of the Date object. Use the
 	// ternary operator to determine whether or not a zero character must
 	// be placed before the month/day.   
@@ -353,7 +366,8 @@ function transform_date(date) {
 };
 
 /*
- * NEW!
+ * Returns a Date object (i.e., it does the opposite of the function
+ * 'transform_date(date)').
  */
 function transform_to_date(days_since_first_date) {
 	// The number of ms. since the first date in 'data_points' (i.e., September 22, 1994). 
@@ -383,37 +397,61 @@ function draw_line(context_2D, x1, y1, x2, y2) {
 // Check for support.
 if(cross_hair_canvas.getContext) {
 	var ctx2 = cross_hair_canvas.getContext("2d");
-	add_cross_hair(ctx2);
+	add_event_listener(ctx2);
 };
 
 //-------------------------------------
 
-function add_cross_hair(context_2D) {
+/*
+ * Adds an event listener to the upper canvas element (on which the cross-hair
+ * is drawn). The event listener listens for mousemove-events.
+ */
+
+var timeout_id;
+
+function add_event_listener(context_2D) {
 	cross_hair_canvas.addEventListener("mousemove", function(event) {
+
+		// Get the mouse position relative to the upper canvas element.
 		var x = event.clientX - left_border_cross_hair;
 		var y = event.clientY - top_border_cross_hair;
 
+		// Check whether the mouse is outside the 'graph area' (i.e., the area
+		// where the data is drawn).
 		if(x < padding_left + y_x_gap || x > padding_left + y_x_gap + length_x_axis || 
 		   y < padding_top || y > padding_top + length_y_axis) {
 			console.log("Out of the graph.");
 		}
 		else {
+			// Make the date label and the temperature label (i.e., the 
+			// tooltip) invisible when the mouse is moving (inside the 'graph
+			// area'). 
+			date_label.style.visibility = "hidden";
+			temperature_label.style.visibility = "hidden";
+			// Clear the timeout.
+			window.clearTimeout(timeout_id);
+
 			ctx2.clearRect(0, 0, canvas_width, canvas_height);
 			var days_since_first_date = reversed_x_transform(x);
 			var date = transform_to_date(days_since_first_date);
-			var max_temp = get_nearest_temperature_value(date);
+			var max_temp = get_temperature_value(date);
 			var y = y_transform(max_temp);
 			draw_cross_hair(context_2D, x, y);
-			draw_tooltip(context_2D, x, y);
-			draw_temperature_label(x, y, max_temp);
-			draw_date_label(x, y, date);
+
+			// Set a timeout for the tooltip (500 ms.).
+			timeout_id = window.setTimeout(function() {
+				draw_tooltip(x, y, date, max_temp)
+			}, 500);
 		};
 	});
 }
 
 //-------------------------------------
 
-function get_nearest_temperature_value(date) {
+/*
+ * Returns the temperature value belonging to the date.
+ */
+function get_temperature_value(date) {
 	for(var index = 0; index < data_points.length; index++) {
 		var current_date = data_points[index][0];
 
@@ -422,22 +460,16 @@ function get_nearest_temperature_value(date) {
 		}
 		else {
 			try {
-				var next_date = data_points[index + 1][0];	// Could cause an exception!
+				var next_date = data_points[index + 1][0];	// Should not cause an exception.
 				if(date >= next_date) {
 					continue;
 				}
 				else {
-					var half_way = next_date.getTime() - 43200000;
-					if(date < half_way) {
-						return data_points[index][1];
-					}
-					else {
-						return data_points[index + 1][1];
-					}
+					return data_points[index][1];
 				};
 			}
 			catch (e) {
-				throw e;
+				throw e;	// Throw the exception if it occurs.
 			};
 		};
 	};
@@ -445,29 +477,70 @@ function get_nearest_temperature_value(date) {
 
 //-------------------------------------
 
+/*
+ * Draws the cross-hair on the upper canvas.
+ */
 function draw_cross_hair(context_2D, x, y) {
-	// Left part of the horizontal cross-hair.
-	draw_line(context_2D, padding_left + y_x_gap, y, x - radius_outer_tooltip, y);
-	// Right part of the horizontal cross-hair.
-	draw_line(context_2D, x + radius_outer_tooltip, y, padding_left + y_x_gap + length_x_axis, y);
-	// Upper part of the vertical cross-hair.
-	draw_line(context_2D, x, padding_top, x, y - radius_outer_tooltip);
-	// Lower part of the vertical cross-hair.
-	draw_line(context_2D, x, y + radius_outer_tooltip, x, padding_top + length_y_axis);
+	// Draw the focus.
+	draw_focus(context_2D, x, y);
+
+	// Draw the left part of the horizontal cross-hair.
+	if(!(x - radius_outer_focus <= padding_left + y_x_gap)) {
+		draw_line(context_2D, padding_left + y_x_gap, y, x - radius_outer_focus, y);
+	};
+
+	// Draw the right part of the horizontal cross-hair.
+	if(!(x + radius_outer_focus >= canvas_width - padding_right)) {
+		draw_line(context_2D, x + radius_outer_focus, y, padding_left + y_x_gap + length_x_axis, y);
+	};
+
+	// Draw the upper part of the vertical cross-hair.
+	if(!(y - radius_outer_focus <= padding_top)) {
+		draw_line(context_2D, x, padding_top, x, y - radius_outer_focus);
+	};
+
+	// Draw the lower part of the vertical cross-hair.
+	if(!(y + radius_outer_focus >= padding_top + canvas_height)) {
+		draw_line(context_2D, x, y + radius_outer_focus, x, padding_top + length_y_axis);
+	};
 };
 
 //-------------------------------------
 
-function draw_tooltip(context_2D, x, y) {
+/*
+ * Draws the focus (i.e., the two circles where the horizontal and vertical
+ * lines of the cross-hair intersect).
+ */
+function draw_focus(context_2D, x, y) {
 	context_2D.beginPath();
-	context_2D.arc(x, y, radius_inner_tooltip, 0, 2 * Math.PI);
-	context_2D.arc(x, y, radius_outer_tooltip, 0, 2 * Math.PI);
+	context_2D.arc(x, y, radius_inner_focus, 0, 2 * Math.PI);
 	context_2D.closePath();
 	context_2D.stroke();
+	context_2D.beginPath();
+	context_2D.arc(x, y, radius_outer_focus, 0, 2 * Math.PI);
+	context_2D.closePath();
+	context_2D.stroke();
+	context_2D.restore();
 };
 
 //-------------------------------------
 
+/*
+ * Calls the functions 'draw_temperature_label(...)' and
+ * 'draw_date_label(...)' to draw the tooltip.
+ */
+function draw_tooltip(x, y, date, max_temp) {
+	draw_temperature_label(x, y, max_temp);
+	draw_date_label(x, y, date);
+};
+
+//-------------------------------------
+
+/*
+ * Draws the temperature label. The place where the temperature label is 
+ * drawn, depends on the position where the horizontal and vertical lines of
+ * the cross-hair intersect (the lines intersect at position ('x', 'y')).
+ */
 function draw_temperature_label(x, y, max_temp) {
 	if(x < canvas_width - padding_right - (length_x_axis / 2)) {
 		temperature_label.style.left = (x + ((canvas_width - padding_right - x) / 2) - (temperature_label_width / 2)).toString() + "px";
@@ -475,19 +548,42 @@ function draw_temperature_label(x, y, max_temp) {
 	else {
 		temperature_label.style.left = (padding_left + y_x_gap + ((x - y_x_gap - padding_left) / 2) - (temperature_label_width / 2)).toString() + "px";
 	};
-	temperature_label.style.top = y.toString() + "px";
+
+	if(y < padding_top + (length_y_axis / 2)) {
+		temperature_label.style.top = y.toString() + "px";
+	}
+	else {
+		temperature_label.style.top = (y - temperature_label_height).toString() + "px";
+	};
+
 	temperature_label.innerHTML = max_temp.toString();
 	temperature_label.style.visibility = "visible";
 };
 
+//-------------------------------------
+
+/*
+ * Draws the date label. As with the temperature label, the place where the
+ * date label is drawn, depends on the position where the horizontal and
+ * vertical lines of the canvas intersect (the lines intersect at
+ * position ('x', 'y')).
+ */
 function draw_date_label(x, y, date) {
+
+	if(x < canvas_width - padding_right - (length_x_axis / 2)) {
+		date_label.style.left = x.toString() + "px";
+	}
+	else {
+		date_label.style.left = (x - date_label_width).toString() + "px";
+	};
+
 	if(y < padding_top + (length_y_axis / 2)) {
 		date_label.style.top = (y + ((canvas_height - padding_bottom - y) / 2) - (date_label_height / 2)).toString() + "px";
 	}
 	else {
 		date_label.style.top = (y - ((y - padding_top) / 2) - (date_label_height / 2)).toString() + "px";
 	};
-	date_label.style.left = x.toString() + "px";
+
 	date_label.innerHTML = get_date_string(date);
 	date_label.style.visibility = "visible";
 };
