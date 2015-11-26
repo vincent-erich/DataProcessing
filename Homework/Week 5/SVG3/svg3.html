@@ -14,7 +14,7 @@
 
   <body>
     <div id="container">
-      <div id="title">
+      <div id="graph_title">
         Population (in millions) by country
       </div>
       <div id="svg_map">
@@ -3055,7 +3055,7 @@
         <?xml version="1.0" encoding="UTF-8"?>
         <svg width="130" height="220" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <rect x="0" y="0" width="130" height="220" stroke="black" fill="transparent"/>
-          <rect x="10" y="10" width="20" height="20" stroke="black" fill="#fcbba1"/><text id="legend_text" x="35" y="25">Unknown</text>
+          <rect x="10" y="10" width="20" height="20" stroke="black" fill="#fee0d2"/><text id="legend_text" x="35" y="25">Unknown</text>
           <rect x="10" y="30" width="20" height="20" stroke="black" fill ="#fcfbfd"/><text id="legend_text" x="35" y="45">&lt 5</text>
           <rect x="10" y="50" width="20" height="20" stroke="black" fill ="#efedf5"/><text id="legend_text" x="35" y="65">5 - 10</text>
           <rect x="10" y="70" width="20" height="20" stroke="black" fill ="#dadaeb"/><text id="legend_text" x="35" y="85">10 - 25</text>
@@ -3068,9 +3068,9 @@
         </svg>
       </div>
       <div id="explanation">
-        <p>The map displayed above uses a sequential color scheme for the population. I have selected the color scheme using <a href="http://colorbrewer2.org/">COLORBREWER</a>. As stated on the COLORBREWER website, sequential color schemes are suited to ordered data that progress from low to high (i.e., population). Furthermore, I have selected a single-hue, sequential color scheme (as opposed to a multi-hue, sequential color scheme), since a single-hue color scheme better implies order than a multi-hue color scheme. That is, when you see two different hues, it is not clear which hue is 'less than' the other. However, when you sees two the same hues with different saturation, it is clear that the hue with the lowest saturation is 'less than' the hue with the highest saturation.</p>
-        <p>I have created nine categories for the population. These categories have been adopted from the corresponding <a href="https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population">Wikipedia page</a>.</p>
-        <p><b>Note</b>: For some countries, the map says that the population is unknow, while the <a href="https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population">Wikipedia page</a> says otherwise (i.e., for Russia). This has the following reason: In <a href="countries.js">countries.js</a>, '<i>Russia</i>' is defined as '<i>Russian Federation</i>'. Therefore, the script that colors the map (<a href="main3.js">main3.js</a>) is unable to find the corresponding ID (since '<i>Russia</i>' does not match '<i>Russian Federation</i>') and cannot color the corresponding path(s). There are a number of countries for which this is the case (e.g., '<i>Iran</i>' vs. '<i>Iran, Islamic Republic of</i>', '<i>Syria</i>' vs. '<i>Syrian Arab Republic</i>', etc.). Unfortunately, I had no time to fix this.</p>
+        <p>The map displayed above uses a sequential color scheme for the population. I have selected the color scheme using <a href="http://colorbrewer2.org/">COLORBREWER</a>. As stated on the COLORBREWER website, sequential color schemes are suited to ordered data that progress from low to high (i.e., population). Furthermore, I have selected a single-hue, sequential color scheme (as opposed to a multi-hue, sequential color scheme), since a single-hue color scheme better implies order than a multi-hue color scheme. That is, when you see two different hues, it is not clear which hue is 'less than' the other hue. However, when you sees two the same hues with different saturation, it is clear that the hue with the lowest saturation is 'less than' the hue with the highest saturation.</p>
+        <p>I have created nine categories for the population (ten including the unknown category). These categories have been adopted from the corresponding <a href="https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population">Wikipedia page</a>.</p>
+        <p><b>Note</b>: For some countries the map says that the population is unknow, while the <a href="https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population">Wikipedia page</a> says otherwise (i.e., for Russia). This has the following reason: In <a href="countries.js">countries.js</a>, '<i>Russia</i>' is defined as '<i>Russian Federation</i>'. Therefore, the script that colors the map (<a href="main3.js">main3.js</a>) is unable to find the corresponding ID (since '<i>Russia</i>' does not match '<i>Russian Federation</i>') and cannot color the corresponding path(s). There are a number of countries for which this is the case (e.g., '<i>Iran</i>' vs. '<i>Iran, Islamic Republic of</i>', '<i>Syria</i>' vs. '<i>Syrian Arab Republic</i>', etc.). Unfortunately, I had no time to fix this (I have tried though, see the function '<i>get_country_id</i>' in <a href="main3.js">main3.js</a>).</p>
       </div>
     </div>
   </body>

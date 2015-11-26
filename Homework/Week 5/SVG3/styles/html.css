@@ -2,7 +2,7 @@
 	position: relative;
 }
 
-#title {
+#graph_title {
 	position: absolute;
 	left: 0px;
 	top: 0px;
@@ -24,7 +24,7 @@
 	top: 0px;
 	z-index: 2;
 	font-family: Arial, Sans-serif;
-	font-size: 1.5em;
+	font-size: 1em;
 }
 
 #svg_legend {

@@ -1,6 +1,8 @@
 /*
  * main3.js
  *
+ * Color codes the map (i.e., the SVG).
+ *
  * Name : Vincent Erich
  * Student Number : 10384081
  */
@@ -9,7 +11,10 @@ window.onload = function() {
 	/*
 	 * Use XMLHttp to read the JSON data from the file
 	 * 'countries_population.json'. Parse the JSON data to a JSON string and
-	 * use this JSON string to color the map (i.e., the SVG).
+	 * use this JSON string to color code the map (i.e., the SVG).
+	 *
+	 * Note: This code has been adopted from w3schools.com:
+	 * http://www.w3schools.com/json/json_http.asp
 	 */
  	var xmlhttp = new XMLHttpRequest();
  	var url = "countries_population.json";
@@ -25,6 +30,13 @@ window.onload = function() {
  	xmlhttp.send();
 }
 
+/*
+ * color_map loops over the data points in the JSON string (passed as an
+ * argument). For each country (i.e., for each data point), the correct ID is
+ * obtained (see get_country_id), and this ID is used to locate the
+ * appropriate path. The fill style of a path is adjusted to reflect the data
+ * (i.e., population) by color coding.
+ */
 function color_map(json) {
 	data_points = json.points;
 	for(var i = 0; i < data_points.length; i++) {
@@ -37,19 +49,38 @@ function color_map(json) {
 		} else {
 			var population = Number(data_point[1]);
 			var fill_color = get_fill_color(population);
-			changeColor(country_id, fill_color);
+			change_color(country_id, fill_color);
 		};
 	};
 };
 
+/*
+ * get_country_id returns the ID (i.e., alpha 2 country code) of a country.
+ * For this, the function uses the variable 'country_codes', which is defined
+ * in 'countries.js'. If no ID is found, the function returns 'undefined'.
+ */
 function get_country_id(country) {
 	for(var i = 0; i < country_codes.length; i++) {
 		var current_country = country_codes[i][2];
 		if(country == current_country) {
 			return country_codes[i][0];
 		};
-
-		// Another check...
+		/*
+		 * Alternative: Split the country name on whitespace to obtain the
+		 * individual words. Then check if all those words occur in the
+		 * name of the current country ('current_country'). If so, return the
+		 * ID of the current country. Continue otherwise.
+		 *
+		 * This works in most cases, but not always, for example:
+		 *
+		 * "Russia" matches with "Russian Federation", correct.
+		 * "Iran" matches with "Iran, Islamic Republic of", correct.
+		 * "Guinea" matches with "Equatorial Guinea", correct.
+		 * "India" matches with "British Indian Ocean Territory", incorrect.
+		 * "Bonaire", "Sint Eustatius", and "Saba" all match with "Bonaire, Sint Eustatius and Saba", incorrect.
+		 *
+		 * Since the alternative does not always work, it was left out.   
+		 */
 		// country_words = country.split(" ");
 		// var match = true;
 		// for(var j = 0; j < country_words.length; j++) {
@@ -59,7 +90,7 @@ function get_country_id(country) {
 		// 	}
 		// };
 		// if(match) {
-		// 	console.log("Country: ", country, "Match: ", country_codes[i][2], "Country code: ", country_codes[i][0]);
+		// 	console.log("Country: " + country + "; Match: " + country_codes[i][2] + "; Country code: " + country_codes[i][0]);
 		// 	return country_codes[i][0];
 		// }
 	};
@@ -67,7 +98,7 @@ function get_country_id(country) {
 };
 
 /*
- * Returns the right (fill) color given a population value.
+ * get_fill_color returns the right fill color given a population value.
  */
 function get_fill_color(population) {
 	// < 5m
@@ -108,30 +139,44 @@ function get_fill_color(population) {
 	}
 };
 
-/* changeColor takes a path ID and a color (hex value)
-   and changes that path's fill color */
-function changeColor(id, color) {
+/* 
+ * change_color takes a path ID and a color (hex value) and changes that
+ * path's fill color. 
+ */
+function change_color(id, color) {
 	try {
-		var element = document.getElementById(id);	// Could be a <g> element (with children), or a single <path> element.
+		var element = document.getElementById(id);	// Can be a <g> element (with children), or a single <path> element.
 		element.style.fill = color;
-		fill_children(element, color);
+		fill_children(element, color);	// Fill the child elements.
 	}
 	catch (e) {
-		console.log(e + "; id: " + id);
+		console.log("Error: " + e + "; id: " + id);
 	};
 };
 
+/*
+ * fill_children takes an element (a <g> element, or a single <path> element)
+ * and a color (hex value), and, if the element has <path> elements or <g> 
+ * elements as children, changes those element's fill color. Furthermore,
+ * if the child is a <g> element, this function is recursively called.
+ */
 function fill_children(element, color) {
 	var children = element.childNodes;
 	for(var i = 0; i < children.length; i++) {
 		var child = children[i];
+		// Continue if the child is not an element.
 		if(child.nodeType != 1) {
 			continue;
 		} else {
+			// If the child is a <path> element, change that path's fill 
+			// color.
 			if(child.nodeName == "path") {
 				child.style.fill = color;
 			}
+			// If the child is a <g> element, change that element's fill color 
+			// and recursively call this function (recursive step).
 			else if(child.nodeName == "g") {
+				child.style.fill = color;
 				fill_children(child, color);
 			}
 			else {

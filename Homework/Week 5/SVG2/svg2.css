@@ -115,29 +115,7 @@
    stroke-miterlimit:1;
 }
 
-/*
- * Additional style rules
- *
- * The following are examples of colouring countries.  You can substitute these with your own styles to colour the countries on the map.
- *
- * Color a few countries:
- *
- * .gb, .au, .nc
- * {
- *    fill:       #ff0000;
- * }
- *
- * Color a few small country circles (and the countries):
- *
- * .ms, .ky
- * {
- *    opacity:    1;
- *    fill:       #ff0000;
- * }
- *
- */
-
-/* continent color */
+/* Continent color. */
 
 /* Not all countries (i.e., 'paths') in the European continent have the
  * 'class="eu"' property, hence the extra classes.
@@ -147,24 +125,24 @@
 	fill: #beaed4;  
 }
 
-/* country colors */
+/* Country colors. */
 
-/* Macedonia */
+/* Macedonia. */
 #mk
 {
   fill: #7fc97f;
 }
 
-/* Spain */
-#path5998, #path6006, #path6008, #path6010, #path6012
+/* Spain. */
 /*#es*/
+#path5998, #path6006, #path6008, #path6010, #path6012
 {
 	fill: #fdc086;
 }
 
-/* Italy */
-#path2916, #path2906, #path2910, #path2912, #path2920
+/* Italy. */
 /*#it*/
+#path2916, #path2906, #path2910, #path2912, #path2920
 {
 	fill: #ffff99;
 }
