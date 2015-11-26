@@ -1,0 +1,48 @@
+#container {
+	position: relative;
+}
+
+#title {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 3;
+	font-family: Arial, Sans-serif;
+	font-size: 1.5em;
+}
+
+#svg_map {
+	position: absolute;
+	left: 0px;
+	top: 40px;
+	z-index: 1;
+}
+
+#legend_title {
+	position: absolute;
+	left: 900px;
+	top: 0px;
+	z-index: 2;
+	font-family: Arial, Sans-serif;
+	font-size: 1.5em;
+}
+
+#svg_legend {
+	position: absolute;
+	left: 900px;
+	top: 40px;
+	z-index: 2;
+}
+
+#legend_text {
+	font-family: Arial, Sans-serif;
+}
+
+#explanation {
+	position: absolute;
+	left: 0px;
+	top: 500px;
+	z-index: 3;
+	font-family: Arial, Sans-serif;
+	font-size: 1em;
+}

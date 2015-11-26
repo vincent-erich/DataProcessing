@@ -13,7 +13,8 @@
 .circlexx
 {
    opacity:0;
-   fill:#e0e0e0;
+   /*fill:#e0e0e0;*/
+   fill:#fcbba1;
    stroke:#000000;
    stroke-width:0.5;
 }
@@ -39,7 +40,8 @@
 .unxx
 {
    opacity:0;
-   fill:#e0e0e0;
+   /*fill:#e0e0e0;*/
+   fill:#fcbba1;
    stroke:#000000;
    stroke-width:0.3;
 }
@@ -53,7 +55,8 @@
 .noxx
 {
    opacity:0;
-   fill:#e0e0e0;
+   /*fill:#e0e0e0;*/
+   fill:#fcbba1;
    stroke:#000000;
    stroke-width:0.5;
 }
@@ -63,7 +66,8 @@
  */
 .landxx
 {
-   fill: #e0e0e0;
+   /*fill:#e0e0e0;*/
+   fill: #fcbba1;
    stroke:#ffffff;
    stroke-width:0.5;
    fill-rule:evenodd;
@@ -74,7 +78,8 @@
  */
 .coastxx
 {
-   fill: #e0e0e0;
+   /*fill:#e0e0e0;*/
+   fill: #fcbba1;
    stroke:#ffffff;
    stroke-width:0.3;
    fill-rule:evenodd;
@@ -85,7 +90,8 @@
  */
 .limitxx
 {
-   fill: #e0e0e0;
+   /*fill:#e0e0e0;*/
+   fill: #fcbba1;
    stroke:#ffffff;
    stroke-width:0;
    fill-rule:evenodd;
@@ -96,7 +102,8 @@
  */
 .antxx
 {
-   fill: #e0e0e0;
+   /*fill:#e0e0e0;*/
+   fill: #fcbba1;
    stroke:#ffffff;
    stroke-width:0;
    fill-rule:evenodd;
@@ -110,6 +117,7 @@
    opacity: 1;
    color: #000000;
    fill:#ffffff;
+   /*fill: #787878;*/
    stroke:#000;
    stroke-width:0.5;
    stroke-miterlimit:1;

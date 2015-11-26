@@ -1,7 +1,18 @@
+/*
+ * main3.js
+ *
+ * Name : Vincent Erich
+ * Student Number : 10384081
+ */
+
 window.onload = function() {
+	/*
+	 * Use XMLHttp to read the JSON data from the file
+	 * 'countries_population.json'. Parse the JSON data to a JSON string and
+	 * use this JSON string to color the map (i.e., the SVG).
+	 */
  	var xmlhttp = new XMLHttpRequest();
  	var url = "countries_population.json";
- 	var json;
 
  	xmlhttp.onreadystatechange = function() {
  		if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -22,7 +33,7 @@ function color_map(json) {
 		var country_id = get_country_id(country);
 		
 		if(!country_id) {
-			console.log("No match: ", country);
+			console.log("No id found for: " + country);
 		} else {
 			var population = Number(data_point[1]);
 			var fill_color = get_fill_color(population);
@@ -55,31 +66,43 @@ function get_country_id(country) {
 	return undefined;
 };
 
+/*
+ * Returns the right (fill) color given a population value.
+ */
 function get_fill_color(population) {
+	// < 5m
 	if (population < 5000000) {
 		return "#fcfbfd";
 	}
+	// 5m - 10m
 	else if(population < 10000000) {
 		return "#efedf5";
 	}
+	// 10m - 25m
 	else if(population < 25000000) {
 		return "#dadaeb";
 	}
+	// 25m - 50m
 	else if(population < 50000000) {
 		return "#bcbddc";
 	}
+	// 50m - 75m
 	else if(population < 75000000) {
 		return "#9e9ac8";
 	}
+	// 75m - 100m
 	else if(population < 100000000) {
 		return "#807dba";
 	}
+	// 100m - 200m
 	else if(population < 200000000) {
 		return "#6a51a3";
 	}
+	// 200m - 1000m
 	else if(population < 1000000000) {
 		return "#54278f";
 	}
+	// 1000m - 1000m +
 	else {
 		return "#3f007d";
 	}
@@ -89,12 +112,12 @@ function get_fill_color(population) {
    and changes that path's fill color */
 function changeColor(id, color) {
 	try {
-		var element = document.getElementById(id);
+		var element = document.getElementById(id);	// Could be a <g> element (with children), or a single <path> element.
 		element.style.fill = color;
 		fill_children(element, color);
 	}
-	catch (err) {
-		console.log("Error: " + err + "; id: " + id);
+	catch (e) {
+		console.log(e + "; id: " + id);
 	};
 };
 
