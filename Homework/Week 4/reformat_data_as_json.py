@@ -63,7 +63,7 @@ array 'json_representation' as a JSON string to this file.
 def write_data(json_representation):
 	json_string = json.dumps(json_representation)
 	with open("KNMI_19950921_reformatted.json", "wb+") as output_file:
-		output_file.write(json.dumps(json_string))
+		output_file.write(json_string)
 
 
 if __name__ == "__main__":
