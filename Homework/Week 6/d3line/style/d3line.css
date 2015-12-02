@@ -2,6 +2,10 @@ body {
 	font: 10px sans-serif;
 }
 
+.title {
+	font: 14px sans-serif;
+}
+
 .axis path,
 .axis line {
   fill: none;
@@ -15,8 +19,25 @@ body {
 	stroke-width: 1.5px;
 }
 
-.title {
-	font: 14px sans-serif;
+.listener {
+	fill: transparent;
+	stroke: transparent;
+}
+
+.cross-hair {
+	fill: none;
+	stroke: black;
+}
+
+.label {
+	fill: black;
+	stroke: black;
+}
+
+.text {
+	fill: white;
+	stroke: white;
+	font: 12px sans-serif;
 }
 
 .explanation {
