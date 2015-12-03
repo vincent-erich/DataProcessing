@@ -1,0 +1,31 @@
+#title {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	font: 16px sans-serif;
+}
+
+#svg_map {
+	position: absolute;
+	left: 10px;
+	top: 30px;
+	width: 960px;
+	height: 500px;
+}
+
+#svg_legend {
+	position: absolute;
+	left: 990px;
+	top: 30px;
+}
+
+.legend_text {
+	font-family: Arial, Sans-serif;
+}
+
+#explanation {
+	position: absolute;
+	left: 10px;
+	top: 540px;
+	font: 12px sans-serif;
+}
