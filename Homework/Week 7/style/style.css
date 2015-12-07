@@ -1,0 +1,51 @@
+body {
+	font: 12px sans-serif;
+}
+
+#title {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+}
+
+#svg_map {
+	position: absolute;
+	left: 10px;
+	top: 75px;
+	width: 960px;
+	height: 600px;
+}
+
+#svg_legend {
+	position: absolute;
+	left: 980px;
+	top: 75px;
+	width: 130px;
+	height: 220px;
+}
+
+#svg_bar_chart {
+	position: absolute;
+	left: 980px;
+	top: 315px;
+	/*left: 10px;*/
+	/*top: 680px;*/
+}
+
+.bar {
+	fill: steelblue;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.x.axis path {
+	display: none;
+}
+/*.y.axis path {
+	display: none;
+}*/
