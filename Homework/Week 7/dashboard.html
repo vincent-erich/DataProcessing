@@ -17,27 +17,44 @@
 		<!-- Datamaps -->
 		<script src="http://datamaps.github.com/scripts/datamaps-all.js"></script>
 
-		<div id="title"><h1>Title of visualization here...</h1></div>
+		<div id="container">
 
-		<div id="svg_map"></div>
+			<div id="title_info">
+				<h1>Title of visualization goes here...</h1>
+				<p>The map below shows the population per country. You can hover over a country to see the exact population. Furthermore, if you hover over a country, the distribution of age groups is shown on the right (i.e, 0-14, 15-64, and 64+, all in percentage of total population). The data is from <a href="http://data.worldbank.org/indicator#topic-8">The World Bank</a>.</p>    
+				<p>Select the year for which you want to see the data:
+				<select id="select_box" onchange="year_changed()">
+					<option value="1960">1960</option>
+					<option value="1961">1961</option>
+				</select> Popup on hover: <strong id="popup_info">ON</strong>.</p>
+			</div>
 
-		<div id="svg_legend">
-            <svg width="130" height="220" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="130" height="220" stroke="black" fill="transparent"/>
-                <rect x="10" y="10" width="20" height="20" stroke="black" fill="#fee0d2"/><text class="legend_text" x="35" y="25">Unknown</text>
-                <rect x="10" y="30" width="20" height="20" stroke="black" fill ="#fcfbfd"/><text class="legend_text" x="35" y="45">&lt 5</text>
-                <rect x="10" y="50" width="20" height="20" stroke="black" fill ="#efedf5"/><text class="legend_text" x="35" y="65">5 - 10</text>
-                <rect x="10" y="70" width="20" height="20" stroke="black" fill ="#dadaeb"/><text class="legend_text" x="35" y="85">10 - 25</text>
-                <rect x="10" y="90" width="20" height="20" stroke="black" fill ="#bcbddc"/><text class="legend_text" x="35" y="105">25 - 50</text>
-                <rect x="10" y="110" width="20" height="20" stroke="black" fill ="#9e9ac8"/><text class="legend_text" x="35" y="125">50 - 75</text>
-                <rect x="10" y="130" width="20" height="20" stroke="black" fill ="#807dba"/><text class="legend_text" x="35" y="145">75 - 100</text>
-                <rect x="10" y="150" width="20" height="20" stroke="black" fill ="#6a51a3"/><text class="legend_text" x="35" y="165">100 - 200</text>
-                <rect x="10" y="170" width="20" height="20" stroke="black" fill ="#54278f"/><text class="legend_text" x="35" y="185">200 - 1000</text>
-                <rect x="10" y="190" width="20" height="20" stroke="black" fill ="#3f007d"/><text class="legend_text" x="35" y="205">1000 +</text>
-            </svg>
-        </div>
+			<div id="svg_map"></div>
 
-        <div id="svg_bar_chart"></div>
+			<div id="svg_legend">
+	            <svg width="140" height="250" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	            	<text x="70" y="20" text-anchor="middle" font-weight="bold">Population (in millions)</text>
+	                <rect x="0" y="0" width="140" height="250" stroke="black" fill="transparent"/>
+	                <rect x="10" y="30" width="20" height="20" stroke="black" fill="#fee0d2"/><text class="legend_text" x="35" y="45">Unknown</text>
+	                <rect x="10" y="50" width="20" height="20" stroke="black" fill ="#fcfbfd"/><text class="legend_text" x="35" y="65">&lt 5</text>
+	                <rect x="10" y="70" width="20" height="20" stroke="black" fill ="#efedf5"/><text class="legend_text" x="35" y="85">5 - 10</text>
+	                <rect x="10" y="90" width="20" height="20" stroke="black" fill ="#dadaeb"/><text class="legend_text" x="35" y="105">10 - 25</text>
+	                <rect x="10" y="110" width="20" height="20" stroke="black" fill ="#bcbddc"/><text class="legend_text" x="35" y="125">25 - 50</text>
+	                <rect x="10" y="130" width="20" height="20" stroke="black" fill ="#9e9ac8"/><text class="legend_text" x="35" y="145">50 - 75</text>
+	                <rect x="10" y="150" width="20" height="20" stroke="black" fill ="#807dba"/><text class="legend_text" x="35" y="165">75 - 100</text>
+	                <rect x="10" y="170" width="20" height="20" stroke="black" fill ="#6a51a3"/><text class="legend_text" x="35" y="185">100 - 200</text>
+	                <rect x="10" y="190" width="20" height="20" stroke="black" fill ="#54278f"/><text class="legend_text" x="35" y="205">200 - 1000</text>
+	                <rect x="10" y="210" width="20" height="20" stroke="black" fill ="#3f007d"/><text class="legend_text" x="35" y="225">1000 +</text>
+	            </svg>
+	        </div>
+
+	        <div id="svg_bar_chart"></div>
+
+	    	<div id="extra_info">
+	    		Extra information goes here...
+			</div>
+
+	    </div>
 
 		<!-- Main script -->
 		<script src="js/script.js"></script>

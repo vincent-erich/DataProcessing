@@ -2,16 +2,13 @@ body {
 	font: 12px sans-serif;
 }
 
-#title {
-	position: absolute;
-	left: 10px;
-	top: 10px;
+#container {
+	position: relative;
 }
 
 #svg_map {
 	position: absolute;
-	left: 10px;
-	top: 75px;
+	top: 120px;
 	width: 960px;
 	height: 600px;
 }
@@ -19,21 +16,30 @@ body {
 #svg_legend {
 	position: absolute;
 	left: 980px;
-	top: 75px;
-	width: 130px;
-	height: 220px;
+	top: 120px;
+	width: 140px;
+	height: 250px;
 }
 
 #svg_bar_chart {
 	position: absolute;
 	left: 980px;
-	top: 315px;
-	/*left: 10px;*/
-	/*top: 680px;*/
+	top: 390px;
 }
 
-.bar {
-	fill: steelblue;
+#extra_info {
+	position: absolute;
+	top: 730px;
+}
+
+.bar_container rect {
+	fill: #FC8D59;
+	stroke: rgba(250, 15, 160, 0.2);
+}
+
+.bar_conatiner text {
+	fill: black;
+	stroke: black;
 }
 
 .axis path,
