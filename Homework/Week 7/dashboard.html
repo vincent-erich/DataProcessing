@@ -23,10 +23,8 @@
 				<h1>Title of visualization goes here...</h1>
 				<p>The map below shows the population per country. You can hover over a country to see the exact population. Furthermore, if you hover over a country, the distribution of age groups is shown on the right (i.e, 0-14, 15-64, and 64+, all in percentage of total population). The data is from <a href="http://data.worldbank.org/indicator#topic-8">The World Bank</a>.</p>    
 				<p>Select the year for which you want to see the data:
-				<select id="select_box" onchange="year_changed()">
-					<option value="1960">1960</option>
-					<option value="1961">1961</option>
-				</select> Popup on hover: <strong id="popup_info">ON</strong>.</p>
+				<select id="select_box" onchange="year_changed()"></select>
+				Map interaction: <strong id="interaction_info">ON</strong>.</p>
 			</div>
 
 			<div id="svg_map"></div>

@@ -15,7 +15,7 @@ body {
 
 #svg_legend {
 	position: absolute;
-	left: 980px;
+	left: 1025px;
 	top: 120px;
 	width: 140px;
 	height: 250px;
@@ -25,16 +25,13 @@ body {
 	position: absolute;
 	left: 980px;
 	top: 390px;
+	width: 230px;
+	height: 330px;
 }
 
 #extra_info {
 	position: absolute;
 	top: 730px;
-}
-
-.bar_container rect {
-	fill: #FC8D59;
-	stroke: rgba(250, 15, 160, 0.2);
 }
 
 .bar_conatiner text {
@@ -52,6 +49,3 @@ body {
 .x.axis path {
 	display: none;
 }
-/*.y.axis path {
-	display: none;
-}*/
