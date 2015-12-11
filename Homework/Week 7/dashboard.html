@@ -20,19 +20,22 @@
 		<div id="container">
 
 			<div id="title_info">
-				<h1>Title of visualization goes here...</h1>
-				<p>The map below shows the population per country. You can hover over a country to see the exact population. Furthermore, if you hover over a country, the distribution of age groups is shown on the right (i.e, 0-14, 15-64, and 64+, all in percentage of total population). The data is from <a href="http://data.worldbank.org/indicator#topic-8">The World Bank</a>.</p>    
-				<p>Select the year for which you want to see the data:
-				<select id="select_box" onchange="year_changed()"></select>
-				Map interaction: <strong id="interaction_info">ON</strong>.</p>
+				<h1>The distribution of age groups in countries around the world</h1>
+
+				<p>The map below shows the population per country. You can hover over a country to see the exact population and the distribution of age groups (i.e, 0-14, 15-64, and 65+, all in percentage of the total population). The distribution of age groups is shown on the right, below the legend. If you want to further explore this distribution, you can click on the map; this will cause the map interaction to be disabled (click again to enable the map interaction). The data used in this visualization goes back to 1960. Select a year from the drop down menu below to see the data for that year. </p>  
+				<p><strong>NOTE</strong>: The data used in this visualization is from <a href="http://data.worldbank.org/indicator#topic-8">The World Bank</a>. There are some countries for which the population is unknown (and thus the distribution of age groups is unknown, e.g., Antarctica), and there are some countries for which the population is known, but the distribution of age groups is unknown (e.g., Greenland). If the population is unknown, then no bar chart will be shown. If the population is known, but the distribution of age groups is unknown, then an empty bar chart will be shown (i.e., a bar chart without bars).</p>
+
+				<p>Show data for: <select id="select_box" onchange="year_changed()"></select></p>
+
+				<p>Map interaction: <strong id="interaction_info">ON</strong></p>
 			</div>
 
 			<div id="svg_map"></div>
 
 			<div id="svg_legend">
-	            <svg width="140" height="250" version="1.1" xmlns="http://www.w3.org/2000/svg">
-	            	<text x="70" y="20" text-anchor="middle" font-weight="bold">Population (in millions)</text>
-	                <rect x="0" y="0" width="140" height="250" stroke="black" fill="transparent"/>
+	            <svg width="160" height="250" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	            	<text x="80" y="20" text-anchor="middle" font-weight="bold">Population (in millions)</text>
+	                <rect x="0" y="0" width="160" height="250" stroke="black" fill="transparent"/>
 	                <rect x="10" y="30" width="20" height="20" stroke="black" fill="#fee0d2"/><text class="legend_text" x="35" y="45">Unknown</text>
 	                <rect x="10" y="50" width="20" height="20" stroke="black" fill ="#fcfbfd"/><text class="legend_text" x="35" y="65">&lt 5</text>
 	                <rect x="10" y="70" width="20" height="20" stroke="black" fill ="#efedf5"/><text class="legend_text" x="35" y="85">5 - 10</text>
@@ -49,7 +52,7 @@
 	        <div id="svg_bar_chart"></div>
 
 	    	<div id="extra_info">
-	    		Extra information goes here...
+	    		The visualization shows an interesting trend. Whereas the percentage of 0-14 year-olds in developed (Western) countries decreases over time, the percentage of 0-14 year-olds in developing countries remains roughly the same, and this percentage is rather high (around 35-40%).   
 			</div>
 
 	    </div>

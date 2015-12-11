@@ -1,7 +1,8 @@
 /*
  * script.js
  *
- * Short description here...
+ * This script implements the dashboard (i.e., the choropleth map, the bar
+ * chart, and the interactivity).
  *
  * Name: Vincent Erich
  * Student number: 10384081
@@ -9,6 +10,7 @@
 
 // Global constants.
 
+var loaded_data;
 var highlight_fill_color = "#FC8D59";
 var highlight_border_color = "rgba(250, 15, 160, 0.2)";
 var no_interaction_color = "#bdbdbd";
@@ -21,12 +23,13 @@ var selected_year = "2014";
 var map_interaction = true;
 var popup_on_hover = true;
 var highlight_on_hover = true;
-var loaded_data;
 var country_code_selected_country;
 
 //----------
 
-// Execute when the page is loaded.
+/*
+ * Execute when the page is loaded.
+ */
 window.onload = function() {
     fill_select_box();
     set_listener_on_map();
@@ -67,9 +70,9 @@ function fill_select_box() {
  * value for 'map_interaction' is set to false, as well as the values for
  * 'popup_on_hover' and 'highlight_on_hover'. A new data object is created
  * (i.e., 'data_to_use') and this data is used to draw the map. If the value
- * for 'map_interaction' is false, the value is set to true, as well as the
- * values for 'popup_on_hover' and 'highlight_on_hover'. The map is drawn with
- * the (original) loaded data.
+ * for 'map_interaction' is false, it is set to true, as well as the values
+ * for 'popup_on_hover' and 'highlight_on_hover'. The map is drawn with the 
+ * (original) loaded data.
  */
 function set_listener_on_map() {
     document.getElementById("svg_map").addEventListener("click", function() {
@@ -79,7 +82,6 @@ function set_listener_on_map() {
             popup_on_hover = false;
             highlight_on_hover = false;
             document.getElementById("interaction_info").innerHTML = "OFF";
-
             data_to_use = 
             {
                 "data": { 
@@ -130,7 +132,7 @@ function get_data_and_draw_map() {
  * This function is called when the user selects a different year from the
  * <select> element. This function sets the value for 'selected_year' to the
  * year selected by the user, restores all the necessary values, and redraws
- * the map.
+ * the map (with the (original) loaded data).
  */
 function year_changed() {
     selected_year = document.getElementById("select_box").value;
@@ -173,8 +175,6 @@ function draw_map(data) {
                 '<% if (data.total) { %>',
                 'Population: <%= data.total %></br></br>',
                 '<i>The distribution of age groups is shown on the right.</i></br>',
-                // '<i>Click to disable the map interaction and explore the bar chart.</i></br></br>',
-                // '<i>Note: If no bars are visible, then the distribution of </br> age groups is unknown (e.g., Greenland).</i>',
                 '<% } else { %>',
                 'Population: unknown <% } %>',
                 '<% draw_bar_chart(geography.properties.name, geography.id, data.total) %>',
@@ -211,12 +211,12 @@ function draw_bar_chart(country_name, country_code, population) {
             var width = 230 - margin.left - margin.right;
             var height = 330 - margin.top - margin.bottom;
 
-            // An (ordinal) scale object for the x-axis.
+            // An ordinal scale object for the x-axis.
             var x = d3.scale.ordinal()
                 .domain(percentages.map(function(d) { return d[0]; }))
                 .rangeRoundBands([0, width], .2);
 
-            // A (linear) scale object for the y-axis.
+            // A linear scale object for the y-axis.
             var y = d3.scale.linear()
                 .domain([0, d3.max(percentages, function(d) { if(d[1] == "Unknown") { return 0; } else { return d[1]; };})])
                 .range([height, 0]);

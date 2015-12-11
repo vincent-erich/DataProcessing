@@ -10,32 +10,34 @@ expected by datamaps.
 Below is an example of the structure of the JSON string. 
 
 {
-	fills: {
-		'popCategory1': 'color1',
-		'popCategory2': 'color2',
-		...,
-		defaultFill: 'default color'
-	},
-	data: {
-		'1960': {
-			'ANG': {
-				'total': 'total population',
-				'fillKey': 'popCategory2',
-				'precentages': [
-					['0-14', 'percentage 0-14'],
-					['15-64', 'percentage 15-64'],
-					['65+', 'percentage 65+']
-				]
-			}
-			'AUS': {
-				...
-			}
-		}
-		...,
-		'2014': {
-			...
-		}
-	}
+    'fills': {
+        'popCategory1': 'color 1',
+        'popCategory2': 'color 2',
+        ...
+        'popCategory9': 'color 9',
+        'defaultFill': 'default color'
+    },
+    'data': {
+        '1960': {
+            'ANG': {
+                'total': 'total population',
+                'fillKey': 'popCategory2',
+                'precentages': [
+                    ['0-14', 'percentage 0-14'],
+                    ['15-64', 'percentage 15-64'],
+                    ['65+', 'percentage 65+']
+                ]
+            },
+            'AUS': {
+                ...
+            },
+            ... // Other countries (country codes).
+        },
+        ... // Other years.
+        '2014': {
+            ...
+        }
+    }
 }
 
 Usage:

@@ -2,41 +2,41 @@ body {
 	font: 12px sans-serif;
 }
 
+#title_info {
+	width: 960px;
+}
+
 #container {
 	position: relative;
 }
 
 #svg_map {
 	position: absolute;
-	top: 120px;
+	top: 230px;
 	width: 960px;
 	height: 600px;
 }
 
 #svg_legend {
 	position: absolute;
-	left: 1025px;
-	top: 120px;
-	width: 140px;
+	left: 1015px;
+	top: 230px;
+	width: 160px;
 	height: 250px;
 }
 
 #svg_bar_chart {
 	position: absolute;
 	left: 980px;
-	top: 390px;
+	top: 500px;
 	width: 230px;
 	height: 330px;
 }
 
 #extra_info {
 	position: absolute;
-	top: 730px;
-}
-
-.bar_conatiner text {
-	fill: black;
-	stroke: black;
+	top: 835px;
+	width: 960px;
 }
 
 .axis path,
@@ -48,4 +48,9 @@ body {
 
 .x.axis path {
 	display: none;
+}
+
+.bar_conatiner text {
+	fill: black;
+	stroke: black;
 }
